@@ -5,6 +5,11 @@
   --foreground: #171717;
 }
 
+.inputbgtransparente{
+  -webkit-box-shadow: 0 0 0 1000px #18181b inset !important;
+  -webkit-text-fill-color: white !important;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
