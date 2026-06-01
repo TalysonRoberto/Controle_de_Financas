@@ -48,33 +48,39 @@ export default function ConfigPanel({ onClose }) {
       <div
         className="
           relative
-          w-[900px]
-          h-[600px]
-          bg-zinc-900
+          w-[1000px]
+          h-[700px]
+          bg-zinc-900/95
+          backdrop-blur-xl
           border border-zinc-800
-          rounded-3xl
+          rounded-[32px]
           overflow-hidden
           flex
-          shadow-2xl
+          shadow-[0_25px_80px_rgba(0,0,0,0.5)]
         "
       >
 
       {/* BOTÃO FECHAR */}
-        <button
-          onClick={onClose}
-          className="
-            absolute
-            top-5 right-5
-            w-10 h-10
-            rounded-xl
-            bg-zinc-800
-            hover:bg-red-500
-            text-white
-            flex items-center justify-center
-            transition-all
-          "
-        >
-        <X size={20} />
+      <button
+        onClick={onClose}
+        className="
+          absolute
+          top-5
+          right-5
+          w-11
+          h-11
+          rounded-2xl
+          bg-zinc-800
+          hover:bg-red-500
+          text-zinc-400
+          hover:text-white
+          flex
+          items-center
+          justify-center
+          transition-all
+        "
+      >
+        <X size={18} />
       </button>
 
         {/* MENU */}
@@ -87,9 +93,15 @@ export default function ConfigPanel({ onClose }) {
           "
         >
 
-          <h2 className="text-white text-2xl font-bold mb-8">
-            Config
-          </h2>
+          <div className="mb-10">
+            <h2 className="text-white text-2xl font-bold">
+              Configurações
+            </h2>
+
+            <p className="text-zinc-500 text-sm mt-1">
+              Personalize o sistema
+            </p>
+          </div>
 
           <div className="flex flex-col gap-3">
 
@@ -100,30 +112,37 @@ export default function ConfigPanel({ onClose }) {
               const active = tab === item.id;
 
               return (
-                <button
-                  key={item.id}
-                  onClick={() => setTab(item.id)}
-                  className={`
-                    flex items-center gap-4
-                    p-4 rounded-2xl
-                    transition-all
-                    text-left
+              <button
+                key={item.id}
+                onClick={() => setTab(item.id)}
+                className={`
+                  flex
+                  items-center
+                  gap-4
+                  h-14
+                  px-4
+                  rounded-2xl
+                  transition-all
+                  font-medium
 
-                    ${
-                      active
-                        ? "bg-green-500 text-white"
-                        : "bg-zinc-800 hover:bg-zinc-700 text-zinc-300"
-                    }
-                  `}
-                >
+                  ${
+                    active
+                      ? `
+                        bg-green-500/10
+                        border border-green-500/30
+                        text-green-400
+                      `
+                      : `
+                        text-zinc-400
+                        hover:bg-zinc-800
+                      `
+                  }
+                `}
+              >
+                <Icon size={20} />
 
-                  <Icon size={20} />
-
-                  <span>
-                    {item.label}
-                  </span>
-
-                </button>
+                <span>{item.label}</span>
+              </button>
               );
             })}
 
@@ -132,8 +151,18 @@ export default function ConfigPanel({ onClose }) {
         </div>
 
         {/* CONTEÚDO */}
-        <div className="flex-1 p-8 overflow-y-auto">
+        <div
+          className="
+            flex-1
+            overflow-y-auto
+            p-10
+            bg-gradient-to-b
+            from-zinc-900
+            to-zinc-950
+          "
+        >
 
+          {/* CONTEÚDO */}
           {tab === "tema" && (
 
             <div>
@@ -146,72 +175,90 @@ export default function ConfigPanel({ onClose }) {
                 Escolha o tema do sistema.
               </p>
 
-              <div className="flex gap-5">
+              <div className="grid grid-cols-2 gap-6 max-w-[500px]">
 
                 <div
                   className="
-                    w-40 h-32
+                    h-44
                     rounded-3xl
-                    bg-zinc-800
-                    border-2 border-green-500
+                    border-2
+                    border-green-500
+                    bg-zinc-950
                     cursor-pointer
-                  "
-                />
-
-                <div
-                  className="
-                    w-40 h-32
-                    rounded-3xl
-                    bg-white
-                    cursor-pointer
-                  "
-                />
-
-              </div>
-
-            </div>
-          )}
-
-          {tab === "perfil" && (
-
-            <div>
-
-              <h1 className="text-white text-3xl font-bold mb-3">
-                Perfil
-              </h1>
-
-              <p className="text-zinc-400 mb-8">
-                Informações do usuário.
-              </p>
-
-              <div className="flex items-center gap-6">
-
-                <div
-                  className="
-                    w-28 h-28
-                    rounded-full
-                    bg-zinc-800
-                  "
-                />
-
-                <button
-                  className="
-                    bg-green-500
-                    hover:bg-green-600
-                    text-white
-                    px-6 py-3
-                    rounded-2xl
-                    transition-all
+                    p-4
+                    flex
+                    flex-col
+                    justify-between
                   "
                 >
-                  Alterar Foto
-                </button>
+                  <span className="text-white font-medium">
+                    Dark
+                  </span>
+
+                  <div className="flex gap-2">
+                    <div className="w-full h-6 bg-zinc-800 rounded" />
+                    <div className="w-10 h-6 bg-green-500 rounded" />
+                  </div>
+                </div>
+
+                <div
+                  className="
+                    h-44
+                    rounded-3xl
+                    border
+                    border-zinc-700
+                    bg-white
+                    cursor-pointer
+                    p-4
+                    flex
+                    flex-col
+                    justify-between
+                  "
+                >
+                  <span className="text-zinc-800 font-medium">
+                    Light
+                  </span>
+
+                  <div className="flex gap-2">
+                    <div className="w-full h-6 bg-zinc-300 rounded" />
+                    <div className="w-10 h-6 bg-green-500 border rounded" />
+                  </div>
+                </div>
 
               </div>
 
             </div>
           )}
+          {/* PERFIL */}
+          {tab === "perfil" && (
 
+          <div>
+            <h2 className="text-white text-2xl font-bold">
+              Usuário
+            </h2>
+
+            <p className="text-zinc-400 mt-1">
+              Administrador do sistema
+            </p>
+
+            <button
+              className="
+                mt-5
+                bg-green-500
+                hover:bg-green-600
+                px-6
+                py-3
+                rounded-2xl
+                text-white
+                font-medium
+                transition-all
+              "
+            >
+              Alterar foto
+            </button>
+          </div>
+          )}
+          {/* ASS USER */}
           {tab === "add" && (
             <AddUser />
           )}

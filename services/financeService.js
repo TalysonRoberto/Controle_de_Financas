@@ -14,3 +14,37 @@ export async function getFinanceiroMensal() {
 
   return data;
 }
+
+export async function getFinanceiroById(id) {
+  const { data, error } = await supabase
+    .from('financeiro_mensal')
+    .select(
+      `
+      *,
+      pagamentos(*),
+      investimentos(*),
+      dividendos(*)
+    `,
+    )
+    .eq('id', id)
+    .single();
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+}
+
+export async function getFinanceiroByAno(ano) {
+  const { data, error } = await supabase
+    .from('financeiro_mensal')
+    .select('*')
+    .eq('ano', ano);
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+}

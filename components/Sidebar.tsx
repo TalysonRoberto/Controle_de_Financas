@@ -8,10 +8,10 @@ import {
   Landmark
 } from "lucide-react";
 
-export default function Sidebar({ onConfig, onLogout }) {
+export default function Sidebar({ onConfig, onLogout, onModal }) {
 
   return (
-    <div className="w-[90px] h-screen bg-zinc-900 border-r border-zinc-800 flex flex-col items-center justify-between py-6">
+    <div className="w-[80px] h-screen bg-zinc-900 border-r border-zinc-800 flex flex-col items-center justify-between py-6">
 
       {/* TOPO */}
       <div className="flex flex-col items-center gap-4">
@@ -30,6 +30,7 @@ export default function Sidebar({ onConfig, onLogout }) {
             flex items-center justify-center
             transition-all
           "
+          onClick={onModal}
         >
           <Plus size={28} />
         </button>
