@@ -16,11 +16,18 @@ export default function DashboardLayout({ children }) {
   const [modalType, setModalType] = useState('pagamentos');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  useEffect(() => {
+  console.log('Modal:', isModalOpen);
+}, [isModalOpen]);
+
+  function handleNavigate(rota) {
+    router.push(rota);
+  }
+
   function handleOpenAddModal(type) {
     setModalType(type);
     setIsModalOpen(true);
   }
-  
 
   useEffect(() => {
 
@@ -52,16 +59,17 @@ export default function DashboardLayout({ children }) {
     { openConfig &&  <ConfigPanel onClose={() => setOpenConfig(false)}/> }
 
     <FinanceModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        tipo={modalType}
+      isOpen={isModalOpen}
+      onClose={() => setIsModalOpen(false)}
+      tipo={modalType}
     />
     
     <Sidebar 
-        onConfig={() => setOpenConfig(true)}
-        onModal={() => handleOpenAddModal('pagamentos')}
-        onLogout={handleLogout}
-        />
+      onConfig={() => setOpenConfig(true)}
+      onModal={() => handleOpenAddModal('pagamentos')}
+      onLogout={handleLogout}
+      onNavigate={handleNavigate}
+    />
 
     <div className="flex-1 flex flex-col overflow-hidden">
       <Header user={user} />

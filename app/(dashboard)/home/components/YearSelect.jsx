@@ -8,50 +8,76 @@ export default function YearSelect({ selectedYear, setSelectedYear }) {
   const years = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
 
   return (
-    <div className="flex items-center justify-between gap-5">
-      <div className="flex flex-col gap-1">
-        <h1 className="text-4xl font-bold text-white capitalize tracking-tight">
-          Ano: {selectedYear}
+    <div
+      className="
+        flex
+        lg:flex-row
+        lg:items-center
+        lg:justify-between
+        gap-5
+      "
+    >
+      {/* TÍTULO */}
+      <div className="flex flex-col gap-1 ">
+        <h1
+          className="
+            text-2xl
+            sm:text-3xl
+            lg:text-4xl
+            font-bold
+            text-white
+            tracking-tight
+            pt-4
+            md:pt-0
+          "
+        >
+          {selectedYear}
         </h1>
-        <p className="text-zinc-400 text-sm">
+
+        <p className="text-zinc-400 text-xs sm:text-sm hidden md:flex">
           Detalhamento financeiro do ano selecionado.
         </p>
       </div>
 
-      <div className="flex items-end gap-3">
-        <div
-          className="
+      {/* ANOS */}
+      <div
+        className="
           flex
+          flex-wrap
           gap-2
           bg-zinc-900
-          p-1
-          rounded-xl
+          p-2
+          rounded-2xl
           border
           border-zinc-800
+          w-full
+          lg:w-auto
         "
-        >
-          {years.map((year) => (
-            <button
-              key={year}
-              onClick={() => setSelectedYear(year)}
-              className={`
-              px-4
-              h-10
+      >
+        {years.map((year) => (
+          <button
+            key={year}
+            type="button"
+            onClick={() => setSelectedYear(year)}
+            className={`
+              flex-1
+              md:min-w-[80px]
+              min-w-[30px]
+              h-11
               rounded-xl
               text-sm
+              font-medium
               transition-all
-
               ${
                 selectedYear === year
-                  ? 'bg-green-500 text-white'
+                  ? 'bg-emerald-500 text-white'
                   : 'text-zinc-400 hover:bg-zinc-800'
               }
             `}
-            >
-              {year}
-            </button>
-          ))}
-        </div>
+          >
+            {year}
+          </button>
+        ))}
       </div>
     </div>
   );

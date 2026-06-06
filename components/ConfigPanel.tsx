@@ -1,272 +1,196 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
 import {
   Palette,
   User,
   UserPlus,
-  X
-} from "lucide-react";
+  X,
+} from 'lucide-react';
 
-import AddUser from "./AddUser";
+import AddUser from './AddUser';
+import ThemeSettings from './ThemeSettings';
+import ProfileSettings from './ProfileSettings';
 
-export default function ConfigPanel({ onClose }) {
+interface ConfigPanelProps {
+  onClose: () => void;
+}
 
-  const [tab, setTab] = useState("tema");
+type TabType = 'tema' | 'perfil' | 'add';
+
+export default function ConfigPanel({
+  onClose,
+}: ConfigPanelProps) {
+  const [tab, setTab] = useState<TabType>('tema');
 
   const menu = [
     {
-      id: "tema",
-      label: "Tema",
-      icon: Palette
+      id: 'tema' as const,
+      label: 'Tema',
+      icon: Palette,
     },
     {
-      id: "perfil",
-      label: "Perfil",
-      icon: User
+      id: 'perfil' as const,
+      label: 'Perfil',
+      icon: User,
     },
     {
-      id: "add",
-      label: "Add User",
-      icon: UserPlus
-    }
+      id: 'add' as const,
+      label: 'Add User',
+      icon: UserPlus,
+    },
   ];
 
   return (
     <div
       className="
         fixed inset-0
-        bg-black/50
-        backdrop-blur-sm
-        flex items-center justify-center
         z-50
+        bg-black/60
+        backdrop-blur-md
+        flex
+        items-center
+        justify-center
+        p-4
       "
     >
-
-      {/* MODAL */}
       <div
         className="
           relative
-          w-[1000px]
-          h-[700px]
-          bg-zinc-900/95
-          backdrop-blur-xl
-          border border-zinc-800
-          rounded-[32px]
+          w-full
+          max-w-6xl
+          h-[75vh]
+          bg-zinc-900
+          border
+          border-zinc-800
+          rounded-3xl
           overflow-hidden
           flex
-          shadow-[0_25px_80px_rgba(0,0,0,0.5)]
+          flex-col
+          md:flex-row
+          shadow-2xl
         "
       >
-
-      {/* BOTÃO FECHAR */}
-      <button
-        onClick={onClose}
-        className="
-          absolute
-          top-5
-          right-5
-          w-11
-          h-11
-          rounded-2xl
-          bg-zinc-800
-          hover:bg-red-500
-          text-zinc-400
-          hover:text-white
-          flex
-          items-center
-          justify-center
-          transition-all
-        "
-      >
-        <X size={18} />
-      </button>
-
-        {/* MENU */}
-        <div
+        {/* FECHAR */}
+        <button
+          onClick={onClose}
           className="
-            w-[240px]
-            bg-zinc-950
-            border-r border-zinc-800
-            p-5
+            absolute
+            top-4
+            right-4
+            z-20
+            w-10
+            h-10
+            rounded-xl
+            bg-zinc-800
+            hover:bg-red-500
+            text-zinc-400
+            hover:text-white
+            flex
+            items-center
+            justify-center
+            transition-all
           "
         >
+          <X size={18} />
+        </button>
 
-          <div className="mb-10">
+        {/* MENU */}
+        <aside
+          className="
+            md:w-[260px]
+            bg-zinc-950
+            border-b
+            md:border-b-0
+            md:border-r
+            border-zinc-800
+            p-4
+          "
+        >
+          <div className="hidden md:block mb-8">
             <h2 className="text-white text-2xl font-bold">
               Configurações
             </h2>
 
-            <p className="text-zinc-500 text-sm mt-1">
+            <p className="text-zinc-500 text-sm">
               Personalize o sistema
             </p>
           </div>
 
-          <div className="flex flex-col gap-3">
+          {/* MOBILE */}
+          <div className="md:hidden mb-4">
+            <h2 className="text-white text-xl font-bold">
+              Configurações
+            </h2>
+          </div>
 
+          <div className="flex md:flex-col gap-2 overflow-x-auto text-[13px]">
             {menu.map((item) => {
-
               const Icon = item.icon;
 
               const active = tab === item.id;
 
               return (
-              <button
-                key={item.id}
-                onClick={() => setTab(item.id)}
-                className={`
-                  flex
-                  items-center
-                  gap-4
-                  h-14
-                  px-4
-                  rounded-2xl
-                  transition-all
-                  font-medium
+                <button
+                  key={item.id}
+                  onClick={() => setTab(item.id)}
+                  className={`
+                    flex
+                    items-center
+                    gap-3
+                    h-12
+                    px-2
+                    rounded-xl
+                    transition-all
+                    whitespace-nowrap
 
-                  ${
-                    active
-                      ? `
-                        bg-green-500/10
-                        border border-green-500/30
-                        text-green-400
-                      `
-                      : `
-                        text-zinc-400
-                        hover:bg-zinc-800
-                      `
-                  }
-                `}
-              >
-                <Icon size={20} />
-
-                <span>{item.label}</span>
-              </button>
+                    ${
+                      active
+                        ? `
+                          bg-emerald-500/10
+                          border
+                          border-emerald-500/30
+                          text-emerald-400
+                        `
+                        : `
+                          text-zinc-400
+                          hover:bg-zinc-800
+                        `
+                    }
+                  `}
+                >
+                  <Icon size={15} />
+                  <span>{item.label}</span>
+                </button>
               );
             })}
-
           </div>
-
-        </div>
+        </aside>
 
         {/* CONTEÚDO */}
-        <div
+        <main
           className="
             flex-1
             overflow-y-auto
-            p-10
+            p-5
+            md:p-8
             bg-gradient-to-b
             from-zinc-900
             to-zinc-950
           "
         >
+          {tab === 'tema' && <ThemeSettings />}
 
-          {/* CONTEÚDO */}
-          {tab === "tema" && (
-
-            <div>
-
-              <h1 className="text-white text-3xl font-bold mb-3">
-                Tema
-              </h1>
-
-              <p className="text-zinc-400 mb-8">
-                Escolha o tema do sistema.
-              </p>
-
-              <div className="grid grid-cols-2 gap-6 max-w-[500px]">
-
-                <div
-                  className="
-                    h-44
-                    rounded-3xl
-                    border-2
-                    border-green-500
-                    bg-zinc-950
-                    cursor-pointer
-                    p-4
-                    flex
-                    flex-col
-                    justify-between
-                  "
-                >
-                  <span className="text-white font-medium">
-                    Dark
-                  </span>
-
-                  <div className="flex gap-2">
-                    <div className="w-full h-6 bg-zinc-800 rounded" />
-                    <div className="w-10 h-6 bg-green-500 rounded" />
-                  </div>
-                </div>
-
-                <div
-                  className="
-                    h-44
-                    rounded-3xl
-                    border
-                    border-zinc-700
-                    bg-white
-                    cursor-pointer
-                    p-4
-                    flex
-                    flex-col
-                    justify-between
-                  "
-                >
-                  <span className="text-zinc-800 font-medium">
-                    Light
-                  </span>
-
-                  <div className="flex gap-2">
-                    <div className="w-full h-6 bg-zinc-300 rounded" />
-                    <div className="w-10 h-6 bg-green-500 border rounded" />
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
+          {tab === 'perfil' && (
+            <ProfileSettings />
           )}
-          {/* PERFIL */}
-          {tab === "perfil" && (
 
-          <div>
-            <h2 className="text-white text-2xl font-bold">
-              Usuário
-            </h2>
-
-            <p className="text-zinc-400 mt-1">
-              Administrador do sistema
-            </p>
-
-            <button
-              className="
-                mt-5
-                bg-green-500
-                hover:bg-green-600
-                px-6
-                py-3
-                rounded-2xl
-                text-white
-                font-medium
-                transition-all
-              "
-            >
-              Alterar foto
-            </button>
-          </div>
-          )}
-          {/* ASS USER */}
-          {tab === "add" && (
+          {tab === 'add' && (
             <AddUser />
           )}
-
-        </div>
-
+        </main>
       </div>
-
     </div>
   );
 }

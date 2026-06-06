@@ -1,66 +1,83 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { User, Lock, ImagePlus, Loader2, Eye, EyeOff} from "lucide-react";
+import { updateUser } from '@/services/userService';
+import { useEffect, useState } from 'react';
 
-import { createUser } from "@/services/userService";
+import {
+  User,
+  Lock,
+  ImagePlus,
+  Loader2,
+  Eye,
+  EyeOff,
+  Save,
+} from 'lucide-react';
 
-export default function AddUser() {
-
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [image, setImage] = useState(null);
-  const [showPassword, setShowPassword] = useState(false);
-
-  const [preview, setPreview] = useState("");
-
+export default function ProfileSettings() {
+  const [username, setUsername] = useState('Administrador');
+  const [userId, setUserId] = useState<number | null>(null);  
+  const [password, setPassword] = useState('');
+  const [image, setImage] = useState<File | null>( null,);
+  const [preview, setPreview] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] =useState(false);
 
-  async function handleAddUser() {
+  useEffect(() => {
+    const userStorage = localStorage.getItem('user');
 
-    if (!username || !password) {
-      alert("Preencha os campos");
-      return;
+    if (!userStorage) return;
+
+    const user = JSON.parse(userStorage);
+
+    setUserId(user.id);
+    setUsername(user.username);
+
+    if (user.avatars) {
+      setPreview(user.avatars);
     }
+  }, []);
 
+
+  async function handleSaveProfile() {
     try {
-
       setLoading(true);
 
-      await createUser({
+      if (!userId) {
+        throw new Error('Usuário não encontrado');
+      }
+
+      const updatedUser = await updateUser({
+        id: userId,
         username,
         password,
-        image
+        image,
       });
 
-      alert("Usuário cadastrado!");
+      localStorage.setItem(
+        'user',
+        JSON.stringify(updatedUser),
+      );
 
-      setUsername("");
-      setPassword("");
-      setImage(null);
-      setPreview("");
-
-    } catch (err) {
-
-      console.log(err);
-
-      alert("Erro ao cadastrar");
-
+      alert('Perfil atualizado com sucesso');
+    } catch (error) {
+      console.error(error);
+      alert('Erro ao atualizar perfil');
     } finally {
-
       setLoading(false);
     }
   }
 
-  function handleImage(e) {
-
-    const file = e.target.files[0];
+  function handleImage(
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) {
+    const file = e.target.files?.[0];
 
     if (!file) return;
 
     setImage(file);
 
-    const imageUrl = URL.createObjectURL(file);
+    const imageUrl =
+      URL.createObjectURL(file);
 
     setPreview(imageUrl);
   }
@@ -72,7 +89,7 @@ export default function AddUser() {
       <div className="mb-4">
 
         <p className="text-zinc-400 mt-2">
-          Cadastre um novo usuário no sistema.
+          Atualize seus dados pessoais.
         </p>
 
       </div>
@@ -108,25 +125,30 @@ export default function AddUser() {
           >
 
             {preview ? (
-
               <img
                 src={preview}
                 alt="preview"
-                className="w-full h-full object-cover"
+                className="
+                  w-full
+                  h-full
+                  object-cover
+                "
               />
-
             ) : (
-
-              <div className="flex flex-col items-center text-zinc-400">
-
+              <div
+                className="
+                  flex
+                  flex-col
+                  items-center
+                  text-zinc-400
+                "
+              >
                 <ImagePlus size={32} />
 
                 <span className="text-sm mt-2">
                   Upload
                 </span>
-
               </div>
-
             )}
 
             <input
@@ -143,7 +165,14 @@ export default function AddUser() {
         {/* USERNAME */}
         <div>
 
-          <label className="text-zinc-300 text-sm mb-2 block">
+          <label
+            className="
+              text-zinc-300
+              text-sm
+              mb-2
+              block
+            "
+          >
             Username
           </label>
 
@@ -165,15 +194,15 @@ export default function AddUser() {
 
             <input
               type="text"
-              placeholder="Digite o username"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) =>
+                setUsername(e.target.value)
+              }
               className="
                 w-full
                 h-14
                 border-none
                 outline-none
-                focus:outline-none
                 text-white
                 placeholder:text-zinc-500
                 inputbgtransparente
@@ -187,8 +216,15 @@ export default function AddUser() {
         {/* PASSWORD */}
         <div>
 
-          <label className="text-zinc-300 text-sm mb-2 block">
-            Password
+          <label
+            className="
+              text-zinc-300
+              text-sm
+              mb-2
+              block
+            "
+          >
+            Nova Senha
           </label>
 
           <div
@@ -209,22 +245,32 @@ export default function AddUser() {
             />
 
             <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Digite a senha"
+              type={
+                showPassword
+                  ? 'text'
+                  : 'password'
+              }
+              placeholder="Digite uma nova senha"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) =>
+                setPassword(e.target.value)
+              }
               className="
                 w-full
-                inputbgtransparente
                 outline-none
                 text-white
                 placeholder:text-zinc-500
+                inputbgtransparente
               "
             />
 
             <button
               type="button"
-              onClick={() => setShowPassword(!showPassword)}
+              onClick={() =>
+                setShowPassword(
+                  !showPassword
+                )
+              }
               className="
                 text-zinc-500
                 hover:text-white
@@ -244,9 +290,9 @@ export default function AddUser() {
 
         </div>
 
-        {/* BUTTON */}
+        {/* BOTÃO */}
         <button
-          onClick={handleAddUser}
+          onClick={handleSaveProfile}
           disabled={loading}
           className="
             h-14
@@ -268,10 +314,14 @@ export default function AddUser() {
                 size={20}
                 className="animate-spin"
               />
-              Cadastrando...
+
+              Salvando...
             </>
           ) : (
-            "Cadastrar Usuário"
+            <>
+              <Save size={18} />
+              Salvar Alterações
+            </>
           )}
 
         </button>
