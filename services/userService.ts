@@ -1,12 +1,28 @@
 import { supabase } from '@/lib/supabase';
 
+interface CreateUserProps {
+  username: string;
+  password: string;
+  image: File | null;
+}
+
+interface UpdateUserProps {
+  id: number | string;
+  username?: string;
+  password?: string;
+  image?: File | null;
+}
+
 // =======================
 // CRIAR USUÁRIO
 // =======================
-export async function createUser({ username, password, image }) {
+export async function createUser({
+  username,
+  password,
+  image,
+}: CreateUserProps) {
   let imageUrl = '';
 
-  // upload imagem
   if (image) {
     const cleanName = image.name
       .replace(/\s+/g, '-')
@@ -29,7 +45,6 @@ export async function createUser({ username, password, image }) {
     imageUrl = publicData.publicUrl;
   }
 
-  // insert banco
   const { data, error } = await supabase
     .from('usuarios')
     .insert([
@@ -51,10 +66,15 @@ export async function createUser({ username, password, image }) {
 // =======================
 // ATUALIZAR USUÁRIO
 // =======================
-export async function updateUser({ id, username, password, image }) {
-  let imageUrl = null;
+export async function updateUser({
+  id,
+  username,
+  password,
+  image,
+}: UpdateUserProps) {
+  let imageUrl: string | null = null;
 
-  const updateData = {};
+  const updateData: Record<string, unknown> = {};
 
   if (image instanceof File) {
     const cleanName = image.name
@@ -90,18 +110,12 @@ export async function updateUser({ id, username, password, image }) {
     updateData.avatars = imageUrl;
   }
 
-  console.log('ID:', id);
-  console.log('UPDATE DATA:', updateData);
-
   const { data, error } = await supabase
     .from('usuarios')
     .update(updateData)
     .eq('id', id)
     .select()
     .single();
-
-  console.log('RESULT:', data);
-  console.log('ERROR:', error);
 
   if (error) {
     throw error;

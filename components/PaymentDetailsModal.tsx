@@ -3,63 +3,93 @@
 import { useState, useEffect } from 'react';
 import { X, Trash2, CheckCircle, Save, Pencil } from 'lucide-react';
 
+interface Payment {
+  id: number | string;
+  servico: string;
+  valor: number;
+  proprietario: string;
+  status: string;
+  created_at: string;
+}
+
+interface PaymentDetailsModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  pagamento: Payment | null;
+  onUpdate: (
+    pagamentoId: number | string,
+    dados: Record<string, unknown>
+  ) => Promise<void>;
+  onDelete: (
+    pagamentoId: number | string
+  ) => Promise<void>;
+}
+
 export default function PaymentDetailsModal({
   isOpen,
   onClose,
   pagamento,
   onUpdate,
   onDelete,
-}) {
+}: PaymentDetailsModalProps) {
   const [valor, setValor] = useState('');
   const [proprietario, setProprietario] = useState('Talyson');
   const [editando, setEditando] = useState(false);
 
-  useEffect(() => {
-    if (pagamento) {
-      setValor(pagamento.valor);
-      setProprietario(pagamento.proprietario);
-      setEditando(false);
-    }
-  }, [pagamento]);
-
-  if (!isOpen || !pagamento) return null;
-
-  async function handleSalvar() {
-    const confirmar = window.confirm('Deseja realmente salvar as alterações?');
-
-    if (!confirmar) return;
-
-    await onUpdate(pagamento.id, {
-      valor: Number(valor),
-      proprietario,
-    });
-
-    onClose();
-
+ useEffect(() => {
+  if (pagamento) {
+    setValor(String(pagamento.valor));
+    setProprietario(pagamento.proprietario);
     setEditando(false);
   }
+}, [pagamento]);
+  if (!isOpen || !pagamento) return null;
 
-  async function handleMarcarPago() {
-    const confirmar = window.confirm('Confirmar pagamento deste serviço?');
+async function handleSalvar() {
+  if (!pagamento) return;
 
-    if (!confirmar) return;
+  const confirmar = window.confirm(
+    'Deseja realmente salvar as alterações?'
+  );
 
-    await onUpdate(pagamento.id, {
-      status: 'pago',
-    });
+  if (!confirmar) return;
 
-    onClose();
-  }
+  await onUpdate(pagamento.id, {
+    valor: Number(valor),
+    proprietario,
+  });
 
-  async function handleExcluir() {
-    const confirmar = window.confirm(
-      `Excluir "${pagamento.servico}" permanentemente?`,
-    );
+  onClose();
+  setEditando(false);
+}
 
-    if (!confirmar) return;
+async function handleMarcarPago() {
+  if (!pagamento) return;
 
-    await onDelete(pagamento.id);
-  }
+  const confirmar = window.confirm(
+    'Confirmar pagamento deste serviço?'
+  );
+
+  if (!confirmar) return;
+
+  await onUpdate(pagamento.id, {
+    status: 'pago',
+  });
+
+  onClose();
+}
+
+async function handleExcluir() {
+  if (!pagamento) return;
+
+  const confirmar = window.confirm(
+    `Excluir "${pagamento.servico}" permanentemente?`
+  );
+
+  if (!confirmar) return;
+
+  await onDelete(pagamento.id);
+}
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">

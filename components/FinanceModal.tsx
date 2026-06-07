@@ -79,7 +79,14 @@ export default function FinanceModal({
       }
 
       setErroServico(false);
-      const registros: RegistroBase[] = [];
+      const registros: Array<{
+        financeiro_id: string | number;
+        servico: string;
+        valor: number;
+        status: string;
+        proprietario?: string;
+        tipo?: string;
+      }> = [];
 
       // PAGAMENTOS
       if (tipo === 'pagamentos') {

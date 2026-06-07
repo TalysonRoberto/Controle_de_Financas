@@ -25,7 +25,7 @@ export default function GraficoInvestimentosServico({ data }: { data: any[] }) {
             stroke="#18181b"
             strokeWidth={3}
             label={({ percent }) =>
-              `${(percent * 100).toFixed(0)}%`
+              `${((percent ?? 0) * 100).toFixed(0)}%`
             }
             labelLine={false}
           >

@@ -1,6 +1,14 @@
 import { supabase } from '@/lib/supabase';
 
-export async function loginUser({ username, password }) {
+interface LoginData {
+  username: string;
+  password: string;
+}
+
+export async function loginUser({
+  username,
+  password,
+}: LoginData) {
   const { data, error } = await supabase
     .from('usuarios')
     .select('*')

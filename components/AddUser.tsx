@@ -9,10 +9,10 @@ export default function AddUser() {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState<File | null>(null);
   const [showPassword, setShowPassword] = useState(false);
 
-  const [preview, setPreview] = useState("");
+  const [preview, setPreview] = useState<string>("");
 
   const [loading, setLoading] = useState(false);
 
@@ -52,18 +52,16 @@ export default function AddUser() {
     }
   }
 
-  function handleImage(e) {
+function handleImage(
+  e: React.ChangeEvent<HTMLInputElement>
+) {
+  const file = e.target.files?.[0];
 
-    const file = e.target.files[0];
+  if (!file) return;
 
-    if (!file) return;
-
-    setImage(file);
-
-    const imageUrl = URL.createObjectURL(file);
-
-    setPreview(imageUrl);
-  }
+  setImage(file);
+  setPreview(URL.createObjectURL(file));
+}
 
   return (
     <div className="w-full max-w-[500px]">

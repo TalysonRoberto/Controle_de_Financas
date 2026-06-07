@@ -22,9 +22,10 @@ interface FinanciamentoItem {
   id: string | number;
   servico: string;
   valor: number;
-  proprietario?: string;
-  status?: string;
+  proprietario: string;
+  status: string;
   tipo?: string;
+  created_at: string;
 }
 
 interface DetalheFinanceiro {
@@ -49,7 +50,7 @@ export default function FinanceiroMesPage() {
   async function loadData() {
     if (!id) return;
     try {
-      const data = await getFinanceiroById(id);
+      const data = await getFinanceiroById(Number(id));
       setFinanceiro(data);
     } catch (error) {
       console.error('Erro ao buscar dados mensais:', error);
@@ -101,14 +102,33 @@ export default function FinanceiroMesPage() {
         isOpen={isDetailsOpen}
         pagamento={selectedPagamento}
         onClose={() => setIsDetailsOpen(false)}
-        onUpdate={async (pagamentoId, dados) => {
+       onUpdate={async (
+          pagamentoId: number | string,
+          dados: Record<string, unknown>
+        ) => {
           await updatePagamento(pagamentoId, dados);
+
           await loadData();
-          const mesAtualizado = await getFinanceiroById(financeiro.id);
-          const pagamentoAtualizado = mesAtualizado.pagamentos.find((p: FinanciamentoItem) => p.id === pagamentoId);
-          if (pagamentoAtualizado) setSelectedPagamento(pagamentoAtualizado);
+
+          const mesAtualizado = await getFinanceiroById(
+            Number(financeiro.id)
+          );
+
+          const pagamentoAtualizado =
+            mesAtualizado.pagamentos.find(
+              (p: FinanciamentoItem) =>
+                p.id === pagamentoId
+            );
+
+          if (pagamentoAtualizado) {
+            setSelectedPagamento(
+              pagamentoAtualizado
+            );
+          }
         }}
-        onDelete={async (pagamentoId) => {
+        onDelete={async (
+          pagamentoId: number | string
+        ) => {
           await deletePagamento(pagamentoId);
           setIsDetailsOpen(false);
           await loadData();

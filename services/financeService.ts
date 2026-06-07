@@ -15,7 +15,9 @@ export async function getFinanceiroMensal() {
   return data;
 }
 
-export async function getFinanceiroById(id) {
+export async function getFinanceiroById(
+  id: number
+) {
   const { data, error } = await supabase
     .from('financeiro_mensal')
     .select(
@@ -36,7 +38,7 @@ export async function getFinanceiroById(id) {
   return data;
 }
 
-export async function getFinanceiroByAno(ano) {
+export async function getFinanceiroByAno(ano: number) {
   const { data, error } = await supabase
     .from('financeiro_mensal')
     .select('*')
@@ -65,7 +67,7 @@ const meses = [
   'Dezembro',
 ];
 
-export async function inicializarAno(ano) {
+export async function inicializarAno(ano: number) {
   const { data: existentes, error } = await supabase
     .from('financeiro_mensal')
     .select('numero_mes')
@@ -73,7 +75,9 @@ export async function inicializarAno(ano) {
 
   if (error) throw error;
 
-  const mesesExistentes = existentes.map((item) => item.numero_mes);
+const mesesExistentes = existentes.map(
+  (item: { numero_mes: number }) => item.numero_mes
+);
 
   const mesesParaCriar = meses
     .map((mes, index) => ({
