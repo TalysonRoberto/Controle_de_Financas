@@ -19,8 +19,44 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+
+  metadataBase: new URL("https://app-controle-de-financas.vercel.app"),
+
   title: 'Controle de Finanças',
-  description: 'Sistema financeiro',
+  description: 'Sistema acompanhamento e controle de finanças e investimento.',
+
+  keywords: [
+    "Controle de Finanças",
+    "Finanças",
+    "Investimentos",
+  ],
+
+  authors: [{ name: "Talyson Robert" }],
+
+  creator: "T.Robert",
+
+
+  openGraph: {
+    title: "Controle de Finanças",
+    description:"Sistema acompanhamento e controle de finanças e investimento.",
+    url: "https://app-controle-de-financas.vercel.app",
+    siteName: "Controle de Finanças",
+
+    images: [
+      {
+        url: "/banner.png",
+        width: 1200,
+        height: 630,
+        alt: "Controle de Finanças",
+      },
+    ],
+
+    locale: "pt_BR",
+
+    type: "website",
+  },
+
+
 };
 
 export default function RootLayout({

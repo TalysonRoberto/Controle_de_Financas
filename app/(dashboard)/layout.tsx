@@ -37,7 +37,7 @@ export default function DashboardLayout({
     useState(false);
 
   useEffect(() => {
-    console.log('Modal:', isModalOpen);
+    //console.log('Modal:', isModalOpen);
   }, [isModalOpen]);
 
   function handleNavigate(rota: string) {
@@ -116,6 +116,20 @@ export default function DashboardLayout({
         >
           <div className="w-full mx-auto">
             {children}
+          </div>
+          <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 text-[11px] font-bold text-gray-500 uppercase ">
+            <span>Controle de finanças @{new Date().getFullYear()} Todos os direitos reservados.</span>
+            <span>
+              Desenvolvedor:{" "}
+              <a
+                href="https://github.com/TalysonRoberto"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors duration-200"
+              >
+                Talyson Roberto
+              </a>
+            </span>
           </div>
         </main>
       </div>

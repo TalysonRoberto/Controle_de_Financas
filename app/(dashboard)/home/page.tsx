@@ -49,7 +49,7 @@ export default function HomePage() {
     try {
       const result = await getFinanceiroMensal();
 
-      console.log(result);
+      //console.log(result);
 
       setData((result || []) as Financeiro[]);
     } catch (err) {

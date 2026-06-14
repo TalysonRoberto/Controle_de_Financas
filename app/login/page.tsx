@@ -26,7 +26,7 @@ export default function LoginPage() {
         password
       });
 
-      console.log("USER:", user);
+      //console.log("USER:", user);
 
       // Salva sessão
       localStorage.setItem("user", JSON.stringify(user));
