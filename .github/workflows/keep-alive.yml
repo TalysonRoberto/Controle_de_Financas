@@ -10,8 +10,20 @@ jobs:
   keep-alive:
     runs-on: ubuntu-latest
     steps:
-      - name: Disparar keep-alive
-        run: |
-          curl -sS "${{ secrets.KEEP_ALIVE_URL }}" \
-            -H "Accept: application/json" \
-            || echo "Falha ao disparar keep-alive"
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run keep-alive script
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        run: node scripts/keep-alive.js

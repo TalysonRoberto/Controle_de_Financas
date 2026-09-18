@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "build:android": "next build && npx cap sync android",
+    "open:android": "npx cap open android"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.3",
@@ -20,6 +22,9 @@
     "recharts": "^3.8.1"
   },
   "devDependencies": {
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/cli": "^8.5.2",
+    "@capacitor/core": "^8.5.2",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
