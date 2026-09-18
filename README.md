@@ -326,6 +326,16 @@ O sistema possui interface moderna desenvolvida com Tailwind CSS, focada em:
 
 ---
 
+## 🔄 Atualizações Recentes
+
+- Ajuste no layout das tabelas da página do mês para manter a mesma altura no desktop
+- Novo resumo por pessoa na página do mês, com salário, total de contas e valor que sobra
+- Salvamento dos salários vinculado ao banco de dados Supabase
+- Ordenação correta dos meses na página inicial
+- Keep-alive semanal para manter o projeto do Supabase ativo
+
+---
+
 ## 📄 Licença
 
 Projeto desenvolvido para fins de estudo, organização financeira pessoal e aprimoramento de conhecimentos em desenvolvimento web utilizando Next.js, TypeScript e Supabase.
