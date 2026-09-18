@@ -1,0 +1,17 @@
+name: Supabase Keep Alive
+
+on:
+  schedule:
+    # Roda toda segunda-feira às 09:00 UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Disparar keep-alive
+        run: |
+          curl -sS "${{ secrets.KEEP_ALIVE_URL }}" \
+            -H "Accept: application/json" \
+            || echo "Falha ao disparar keep-alive"
